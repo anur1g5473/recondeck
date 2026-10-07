@@ -1,0 +1,8 @@
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 400
+;; flags: qr aa; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 0
+
+;; ANSWER SECTION:
+example.com.	3600	IN	SOA	ns1.example.com. hostmaster.example.com. 2024010101 7200 3600 1209600 3600
+example.com.	3600	IN	NS	ns1.example.com.
+example.com.	3600	IN	NS	ns2.example.com.
+www.example.com.	300	IN	A	93.184.216.34

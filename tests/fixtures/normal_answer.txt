@@ -1,0 +1,6 @@
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 4821
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; ANSWER SECTION:
+example.com.		3600	IN	MX	10 mail.example.com.
+example.com.		3600	IN	MX	20 mail2.example.com.

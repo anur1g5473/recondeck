@@ -1,0 +1,2 @@
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 1234
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0

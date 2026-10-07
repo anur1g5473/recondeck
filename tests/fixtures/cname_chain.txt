@@ -1,0 +1,6 @@
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 700
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 0
+
+;; ANSWER SECTION:
+www.example.com.	300	IN	CNAME	www2.example.com.
+www2.example.com.	300	IN	A	93.184.216.34

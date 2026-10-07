@@ -1,0 +1,5 @@
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 100
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;; ANSWER SECTION:
+example.com.	300	IN	TXT	"v=spf1 " "include:_spf.example.com" " ~all"
