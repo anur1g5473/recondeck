@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import os
+import re
+import shutil
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -39,6 +41,18 @@ def save_scan(scan: Scan) -> Path:
 def load_scan(scan_id: str) -> Scan:
     data = json.loads((scan_root() / scan_id / "scan.json").read_text(encoding="utf-8"))
     return Scan.from_dict(data)
+
+
+def delete_scan(scan_id: str) -> None:
+    if not re.fullmatch(r"[A-Za-z0-9_-]{1,100}", scan_id):
+        raise ValueError("Invalid scan ID.")
+
+    root = scan_root().resolve()
+    scan_dir = (root / scan_id).resolve()
+    if scan_dir.parent != root or not scan_dir.is_dir() or not (scan_dir / "scan.json").is_file():
+        raise FileNotFoundError(scan_id)
+
+    shutil.rmtree(scan_dir)
 
 
 def write_raw_output(scan_id: str, command_id: str, text: str) -> Path:

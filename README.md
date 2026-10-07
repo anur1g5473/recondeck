@@ -69,6 +69,10 @@ The project is designed to make DNS review more understandable than a collection
 - 🪪 First-run terms acceptance screen.
 - 📡 Background scan workflow with stage status and progress.
 - 🧾 Findings, record data, and command history in the browser UI.
+- 🗑️ Delete saved scans from the recent-scan list.
+- ➕ Start a new scan from a completed scan or report.
+- 🧭 Findings, Records, DNSSEC, and Full JSON report tabs.
+- ⌨️ Live scan activity with the active stage, completed checks, and recent commands.
 - 📤 JSON, Markdown, and HTML report downloads.
 - 🔐 Local API token and loopback request checks.
 - 🗃️ Recent scans loaded from local scan storage.
@@ -165,7 +169,7 @@ sudo apt install -y dnsutils whois python3 python3-venv python3-pip
 bash start.sh
 ```
 
-`start.sh` creates a project-local `.venv` if needed, installs `requirements.txt`, checks for `dig` and `whois`, then starts the app on port 5000 (or the next available port in its configured range).
+`start.sh` creates a WSL/Linux virtual environment under the Linux user's data directory (kept separate from the Windows `.venv` and outside the Windows-mounted project folder), installs `requirements.txt`, checks for `dig` and `whois`, then starts the app on port 5000 (or the next available port in its configured range).
 
 ### Manual Python setup
 
@@ -287,6 +291,10 @@ Contributions should preserve the local-only security model, safe subprocess han
 | [`TERMS.md`](./TERMS.md) | Canonical Terms of Use shown in the app |
 | [`project_details.md`](./project_details.md) | Original detailed technical specification |
 | [`LICENSE`](./LICENSE) | MIT License |
+
+## fixes:
+```sudo apt update
+sudo apt install -y dnsutils whois python3.14-venv python3-pip```
 
 ---
 

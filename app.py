@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 import secrets
+import subprocess
 import threading
 import webbrowser
 from datetime import datetime, timezone
@@ -17,7 +18,7 @@ from recondeck.compare import compare_scans
 from recondeck.orchestrator import run_scan, new_scan_id
 from recondeck.report import export_scan
 from recondeck.security import ensure_valid_token, host_allowed, origin_allowed, set_app_token
-from recondeck.store import list_recent_scans, load_scan, save_scan
+from recondeck.store import delete_scan, list_recent_scans, load_scan, save_scan
 from recondeck.validators import parse_target
 
 app = Flask(__name__)
@@ -229,6 +230,24 @@ def api_get_scan(scan_id):
     return jsonify(data)
 
 
+@app.delete("/api/scans/<scan_id>")
+def api_delete_scan(scan_id):
+    global CURRENT_SCAN, CURRENT_SCAN_ID
+    if scan_id == CURRENT_SCAN_ID and CURRENT_SCAN_THREAD is not None and CURRENT_SCAN_THREAD.is_alive():
+        return jsonify({"error": "cannot delete a scan while it is running"}), 409
+    try:
+        delete_scan(scan_id)
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+    except FileNotFoundError:
+        abort(404)
+
+    if scan_id == CURRENT_SCAN_ID:
+        CURRENT_SCAN = None
+        CURRENT_SCAN_ID = None
+    return jsonify({"status": "deleted", "scan_id": scan_id})
+
+
 @app.get("/api/scans/<scan_id>/commands/<command_id>")
 def api_get_command_output(scan_id, command_id):
     file_path = Path(PROJECT_ROOT) / "scans" / scan_id / "raw" / f"{command_id}.txt"
@@ -273,6 +292,22 @@ def _choose_port(start_port):
 
 
 def _open_browser(url):
+    if os.environ.get("WSL_INTEROP") or os.environ.get("WSL_DISTRO_NAME"):
+        try:
+            result = subprocess.run(
+                ["cmd.exe", "/c", "start", "", url],
+                check=False,
+                timeout=10,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            print(f"Could not open the Windows browser automatically ({exc}). Open this URL manually: {url}")
+            return
+        if result.returncode != 0:
+            print(f"Could not open the Windows browser automatically. Open this URL manually: {url}")
+        return
+
     if not webbrowser.open(url):
         print(f"Could not open a browser automatically. Open this URL manually: {url}")
 

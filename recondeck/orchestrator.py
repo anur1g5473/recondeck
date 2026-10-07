@@ -42,6 +42,7 @@ def _log_command(scan: Scan, record):
         }
     )
     write_raw_output(scan.id, record.id, (record.stdout or "") + (record.stderr or ""))
+    save_scan(scan)
 
 
 def run_scan(target: str, options: dict | None = None, scan_id: str | None = None):
